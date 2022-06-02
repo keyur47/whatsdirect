@@ -2,13 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class Controller extends GetxController {
-  TextEditingController myController = TextEditingController();
-  TextEditingController textController = TextEditingController();
   FocusNode focusNode = FocusNode();
   FocusNode focusNodes = FocusNode();
   RxBool isOpenKeyboard  = false.obs;
-
-
+  RxString code = "".obs;
   @override
   void onInit() {
     // TODO: implement dispose

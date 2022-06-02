@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:sizer/sizer.dart';
 import 'package:whatsdirect/modules/homepage.dart';
 void main() {
@@ -12,9 +13,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Sizer(
       builder: (context, orientation, deviceType) {
-        return const MaterialApp(
+        return  const GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          // theme: ThemeData(primarySwatch: Colors.amber),
           home: HomePage(),
         );
       },

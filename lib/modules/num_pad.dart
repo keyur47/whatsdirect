@@ -7,6 +7,7 @@ class NumPad extends StatelessWidget {
   final TextEditingController? controller;
   final Function delete;
   final Function onSubmit;
+  final Function clear;
 
   const NumPad({
     Key? key,
@@ -15,6 +16,7 @@ class NumPad extends StatelessWidget {
     this.iconColor = Colors.amber,
     required this.delete,
     required this.onSubmit,
+   required this.clear,
     required this.controller,
   }) : super(key: key);
 
@@ -102,9 +104,9 @@ class NumPad extends StatelessWidget {
             children: [
               IconButton(
                 focusColor: Colors.transparent,
-                onPressed: () => delete(),
+                onPressed: () => clear(),
                 icon: Icon(
-                  Icons.backspace,
+                  Icons.copyright,
                   color: iconColor,
                 ),
                 iconSize: buttonSize,
@@ -116,9 +118,9 @@ class NumPad extends StatelessWidget {
                 controller: controller,
               ),
               IconButton(
-                onPressed: () => onSubmit(),
+                onPressed: () => delete(),
                 icon: Icon(
-                  Icons.done_rounded,
+                  Icons.clear,
                   color: iconColor,
                 ),
                 iconSize: buttonSize,

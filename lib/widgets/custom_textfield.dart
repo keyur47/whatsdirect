@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/countries.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:sizer/sizer.dart';
 
 Widget phoneNumberTextField(TextEditingController? controller, bool? showCursor,
-    FocusNode? focusNode, String hintText, TextInputType textInputType) {
+    FocusNode? focusNode, String hintText, TextInputType textInputType,ValueChanged<Country>? valueChanged) {
   return Container(
     height: 6.h,
     decoration: BoxDecoration(
@@ -18,6 +20,17 @@ Widget phoneNumberTextField(TextEditingController? controller, bool? showCursor,
           Icons.keyboard_arrow_down_sharp,
           color: Colors.black,
         ),
+        onCountryChanged: valueChanged,
+        // onChanged: (phone) {
+        //   print("-------------${phone.countryCode}");
+        // },
+        // onCountryChanged:  valueChanged,
+        // onCountryChanged: (country) {
+        //
+        //
+        //   print('Country changed to: ' + country.dialCode);
+        // },
+         initialCountryCode: 'IN',
         showCountryFlag: false,
         invalidNumberMessage: "",
         decoration: InputDecoration(
