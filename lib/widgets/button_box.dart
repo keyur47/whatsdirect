@@ -1,34 +1,38 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 Widget button(
     {required String text,
-     required VoidCallback onTap,
+    required VoidCallback onTap,
     required IconData iconData,
+    required Color textColor,
+    required Color boxColor,
     required Color iconColor}) {
   return InkWell(
     onTap: onTap,
     child: Container(
-      height: 14.w,
+      height: 13.w,
       decoration: BoxDecoration(
-          border: Border.all(width: 2),
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(4.w)),
+          color: boxColor, borderRadius: BorderRadius.circular(10.w)),
       child: Center(
         child: Padding(
-          padding: EdgeInsets.only(left: 2.w, right: 2.w),
+          padding: EdgeInsets.only(left: 2.5.w, right: 2.5.w),
           child: Row(
             children: [
               Icon(
                 iconData,
                 color: iconColor,
               ),
-              SizedBox(width: 1.w,),
+              SizedBox(
+                width: 1.w,
+              ),
               Text(
-                text,style: const TextStyle(fontSize: 15,fontWeight: FontWeight.w400),
+                text,
+                style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                    color: textColor),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -38,5 +42,3 @@ Widget button(
     ),
   );
 }
-
-

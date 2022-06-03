@@ -16,7 +16,7 @@ class NumPad extends StatelessWidget {
     this.iconColor = Colors.amber,
     required this.delete,
     required this.onSubmit,
-   required this.clear,
+    required this.clear,
     required this.controller,
   }) : super(key: key);
 
@@ -158,7 +158,8 @@ class NumberButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           primary: color,
           shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(20),bottomRight: Radius.circular(20)),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
           ),
         ),
         onPressed: () {

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+
+
+
+
   AppColors._();
   static const Color teals = Color(0xff294348);
   static const MaterialColor white = MaterialColor(0xFFFFFFFF, <int, Color>{
@@ -71,4 +75,14 @@ class AppColors {
       900: Color(0xFF000749),
     },
   );
+}
+
+
+
+class AppColor {
+  static const appColors = Color(0Xff75B73C);
+  static const whiteColor = Color(0xffFFFFFF);
+  static const textColor = Color(0xff242821);
+  static const blackColor = Colors.black;
+  static const backgroundColor = Color(0XffEFEFFF);
 }
