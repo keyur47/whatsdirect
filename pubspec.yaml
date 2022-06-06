@@ -35,16 +35,18 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   sizer: ^2.0.15
-  keyboard_actions: ^4.0.0
-  flutter_keyboard_visibility: ^5.2.0
+#  keyboard_actions: ^4.0.0
+#  flutter_keyboard_visibility: ^5.2.0
   get: ^4.6.5
   intl_phone_field: ^3.1.0
   url_launcher: ^6.0.10
-  fluttertoast: ^8.0.9
   shared_preferences: ^2.0.15
   geolocator: ^8.0.0
   permission_handler: ^8.3.0
   get_storage: ^2.0.3
+  loading_indicator: ^3.1.0
+  flutter_share: ^2.0.0
+  reviews_slider: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -54,7 +56,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/image/history.png"
+  image_path: "assets/image/whatsapp.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

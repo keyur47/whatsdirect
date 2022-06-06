@@ -12,12 +12,12 @@ Widget button(
   return InkWell(
     onTap: onTap,
     child: Container(
-      height: 13.w,
+      // height: 5.h,
       decoration: BoxDecoration(
           color: boxColor, borderRadius: BorderRadius.circular(10.w)),
       child: Center(
         child: Padding(
-          padding: EdgeInsets.only(left: 2.5.w, right: 2.5.w),
+          padding: EdgeInsets.only(left: 2.5.w, right: 2.5.w,top: 1.5.h,bottom: 1.5.h),
           child: Row(
             children: [
               Icon(
