@@ -26,25 +26,11 @@ class _AddListState extends State<AddList> {
    }
 
    getData() async {
-     // setState(() async{
-       // data = controller.myController.text = AppSharedPreference.lastNumber.join("").toString();
-       controller.tempList = await SharedPrefs.getNumberList();
+      controller.tempList = await SharedPrefs.getNumberList();
        setState(() {
-         controller.Listt =  [controller.myController.text];
-       var dat2 = controller.allData.addAll(controller.Listt);
-        //print("43353${dat2}");
+      controller.tempList.add(controller.myController.text);
        });
-       print("dataType3:-  $dataType");
        print("------------>>> ${controller.tempList}");
-      // });
-
-     // var preferences = await SharedPreferences.getInstance();
-     //
-     // setState(() {
-     //   data = preferences.getString("color");
-     //   log("----------------------------------------------------------${data}");
-     //   colorName = color[int.parse(data!) - 1].color;
-    // });
    }
 
   @override
@@ -53,7 +39,7 @@ class _AddListState extends State<AddList> {
       body: ListView.builder(
            itemCount: controller.tempList.length,
           itemBuilder: ((context, index) {
-        return Text("${controller.Listt[index]}");
+        return Text("${controller.tempList[index]}");
       } )),
     );
   }
