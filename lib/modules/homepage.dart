@@ -14,9 +14,9 @@ import 'package:whatsdirect/modules/num_pad.dart';
 import 'package:whatsdirect/utils/app_color.dart';
 import 'package:whatsdirect/utils/appsnackbar.dart';
 import 'package:whatsdirect/utils/string_utils.dart';
+import 'package:whatsdirect/widgets/add-number_list.dart';
 import 'package:whatsdirect/widgets/button_box.dart';
 import 'package:whatsdirect/widgets/custom_textfield.dart';
-import 'package:whatsdirect/widgets/feedback.dart';
 import 'package:whatsdirect/widgets/privacy.dart';
 
 class HomePage extends StatefulWidget {
@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                           // enableFeedback: true,
                           onSelected: (int value) {
                             if (value == 1) {
-                              Get.to(FeedBack());
+                              Get.to(AddList());
                             } else if (value == 2) {
                               FlutterShare.share(
                                   title: "Direct WhatsApp",
@@ -163,8 +163,7 @@ class _HomePageState extends State<HomePage> {
                                             }),
                                           ),
                                           Padding(
-                                            padding: EdgeInsets.only(
-                                                top: 5.h),
+                                            padding: EdgeInsets.only(top: 5.h),
                                             child: ElevatedButton(
                                                 onPressed: () {},
                                                 child: Text(
@@ -215,35 +214,41 @@ class _HomePageState extends State<HomePage> {
                     padding: EdgeInsets.only(top: 1.h, right: 5.w),
                     child: Column(
                       children: [
-                        phoneNumberTextField(
-                            controller: controller.myController,
-                            showCursor: false,
-                            onTapV: () async {
-                              FocusScope.of(context).unfocus();
-                              await Future.delayed(
-                                  const Duration(milliseconds: 200));
-                              showNumericContainer.value = true;
-                            },
-                            // focusNode: controller.focusNodes,
-                            hintText: StringsUtils.phoneNumber,
-                            textInputType: TextInputType.none,
-                            valueChanged: (country) {
-                              controller.data.value = country.dialCode;
-                              print('Country changed to: ${country.dialCode}');
-                            },
-                            onTap: () {
-                              controller.myController.text =
-                                  AppSharedPreference.lastNumber.toString();
-                              controller.data.value =
-                                  AppSharedPreference.lastNumberCode.toString();
-                            }),
+                        InkWell(
+                          child: phoneNumberTextField(
+                              controller: controller.myController,
+                              showCursor: false,
+                              onTapV: () async {
+                                FocusScope.of(context).unfocus();
+                                await Future.delayed(
+                                    const Duration(milliseconds: 200));
+                                showNumericContainer.value = true;
+                              },
+                              // focusNode: controller.focusNodes,
+                              hintText: StringsUtils.phoneNumber,
+                              textInputType: TextInputType.none,
+                              valueChanged: (country) {
+                                controller.data.value = country.dialCode;
+                                print(
+                                    'Country changed to: ${country.dialCode}');
+                              },
+                              onTap: () async {
+                                List<String> data = await SharedPrefs.getNumberList();
+                                var dataType = controller.myController.text = data.join();
+                                print("dataType:-  $dataType");
+                                // var data =  controller.myController.text = AppSharedPreference.lastNumber.toString();
+                                // // AppSharedPreference.clear();
+                                //   controller.data.value = AppSharedPreference.lastNumberCode.toString();
+                              }),
+                          onTap: () {
+                            // Get.to(AddList());
+                          },
+                        ),
                         SizedBox(
                           height: 1.5.h,
                         ),
                         textField(
                             controller: controller.textController,
-                            // true,
-                            // controller.focusNode,
                             hintText: StringsUtils.typeYourMessage,
                             textInputType: TextInputType.text,
                             onTap: () {
@@ -266,10 +271,16 @@ class _HomePageState extends State<HomePage> {
                                 onTap: () async {
                                   if (controller.myController.text.isNotEmpty) {
                                     if (controller.data.isNotEmpty) {
-                                      AppSharedPreference.setLastNumber(
-                                          controller.myController.text);
-                                      AppSharedPreference.setLastNumberCode(
-                                          controller.data.value);
+                                      List<String> tempList = [];
+                                      tempList
+                                          .add(controller.myController.text);
+                                      SharedPrefs.numberList(tempList);
+                                      // List<String> data = await SharedPrefs.getNumberList();
+
+                                      // AppSharedPreference.setLastNumber(tempList);
+                                      // tempList.add(controller.myController.text);
+                                      // AppSharedPreference.setLastNumberCode(controller.myController.text);
+                                      // tempList.add(controller.data.value);
                                       controller.url.value =
                                           "https://wa.me/+${controller.data.value}${controller.myController.text}?text=${controller.textController.text}";
                                       await launch(controller.url.value);
@@ -298,10 +309,10 @@ class _HomePageState extends State<HomePage> {
                                 onTap: () async {
                                   if (controller.myController.text.isNotEmpty) {
                                     if (controller.data.isNotEmpty) {
-                                      AppSharedPreference.setLastNumber(
-                                          controller.myController.text);
-                                      AppSharedPreference.setLastNumberCode(
-                                          controller.data.value);
+                                      // AppSharedPreference.setLastNumber(
+                                      //     controller.myController.text);
+                                      // AppSharedPreference.setLastNumberCode(
+                                      //     controller.data.value);
                                       await Geolocator.requestPermission();
                                       if (await Permission.location.isGranted) {
                                         Position? position;

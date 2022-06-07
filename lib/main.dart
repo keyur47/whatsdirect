@@ -8,9 +8,15 @@ import 'package:sizer/sizer.dart';
 import 'package:whatsdirect/modules/homepage.dart';
 import 'package:whatsdirect/widgets/splashScreen.dart';
 
+import 'helper/shared_preferences.dart';
 import 'modules/controller/controller.dart';
-void main()async {
-    await GetStorage.init();
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // SharedPrefs.numberList(['123', '456']);
+  // List<String> data = await SharedPrefs.getNumberList();
+  // print("------------>>> ${data.join('').toString()}");
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
@@ -21,36 +27,35 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Sizer(builder: (context, orientation, deviceType) {
+    return Sizer(
+      builder: (context, orientation, deviceType) {
         return GestureDetector(
           onTap: () async {
             WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
             await Future.delayed(const Duration(milliseconds: 200));
             showNumericContainer.value = true;
           },
-           child:  GetMaterialApp(
-            debugShowCheckedModeBanner: false,
-               initialRoute: SplashScreen.routeName,
-               initialBinding: AppBidding(),
-               getPages: [
-                 GetPage(
-                   name: SplashScreen.routeName,
-                   page: () => const SplashScreen(),
-                   transition: Transition.leftToRight,
-                 ),
-                 GetPage(
-                   name: HomePage.routeName,
-                   page: () =>  HomePage(),
-                   transition: Transition.leftToRight,
-                 ),
-               ]
-          ),
+          child: GetMaterialApp(
+              debugShowCheckedModeBanner: false,
+              initialRoute: SplashScreen.routeName,
+              initialBinding: AppBidding(),
+              getPages: [
+                GetPage(
+                  name: SplashScreen.routeName,
+                  page: () => const SplashScreen(),
+                  transition: Transition.leftToRight,
+                ),
+                GetPage(
+                  name: HomePage.routeName,
+                  page: () => HomePage(),
+                  transition: Transition.leftToRight,
+                ),
+              ]),
         );
       },
     );
   }
 }
-
 
 class AppBidding implements Bindings {
   @override
@@ -58,5 +63,3 @@ class AppBidding implements Bindings {
     Get.put(Controller());
   }
 }
-
-

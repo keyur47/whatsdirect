@@ -12,6 +12,9 @@ class Controller extends GetxController {
   RxBool isOpenKeyboard  = false.obs;
   RxString url = ''.obs;
   RxString data = ''.obs;
+  List<String> allData = [];
+  List<String> tempList = [];
+  List<String> Listt = [];
 
   // @override
   //   void onInit() {
