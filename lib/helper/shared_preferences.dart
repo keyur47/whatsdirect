@@ -1,8 +1,71 @@
-import 'dart:convert';
 
-import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:whatsdirect/widgets/model.dart';
+
+
+class SharedPrefs {
+
+  static final Future<SharedPreferences> prefsData = SharedPreferences.getInstance();
+
+  static Future<void> setNumberList(List<String> numberList) async {
+    final SharedPreferences prefs = await prefsData;
+    await prefs.setStringList("numberList", numberList);
+  }
+
+  static Future<List<String>> getNumberList() async {
+    final SharedPreferences prefs = await prefsData;
+    return prefs.getStringList("numberList") ?? [];
+  }
+
+
+  static Future<void> setCountryNumberList(List<String> countryNumberList) async {
+    final SharedPreferences prefs = await prefsData;
+    await prefs.setStringList("countryNumberList", countryNumberList);
+  }
+
+
+  static Future<List<String>> getCountryNumberList() async {
+    final SharedPreferences prefs = await prefsData;
+    return prefs.getStringList("countryNumberList") ?? [];
+  }
+
+
+  static Future<void> setCountryNameList(List<String> countryNumberList) async {
+    final SharedPreferences prefs = await prefsData;
+    await prefs.setStringList("countryNameList", countryNumberList);
+  }
+
+
+  static Future<List<String>> getCountryNameList() async {
+    final SharedPreferences prefs = await prefsData;
+    return prefs.getStringList("countryNameList") ?? [];
+  }
+
+
+  static Future<void> setUserNameList(List<String> setUserNameList) async {
+    final SharedPreferences prefs = await prefsData;
+    await prefs.setStringList("setUserNameList", setUserNameList);
+  }
+
+  static Future<List<String>> getUserNameList() async {
+    final SharedPreferences prefs = await prefsData;
+    return prefs.getStringList("setUserNameList") ?? [];
+  }
+
+
+  static Future<void> clear() async {
+   final SharedPreferences prefs = await prefsData;
+   await prefs.clear();
+  }
+
+
+}
+
+
+
+
+
+
+
 
 // class AppSharedPreference {
 //   static final _getStorage = GetStorage();
@@ -23,24 +86,3 @@ import 'package:whatsdirect/widgets/model.dart';
 
 
 //
-class SharedPrefs {
-
-  static final Future<SharedPreferences> prefsData = SharedPreferences.getInstance();
-
-
-
-
-  static Future<void> numberList(List<String> numberList) async {
-    final SharedPreferences prefs = await prefsData;
-    await prefs.setStringList("numberList", numberList);
-  }
-
-
-  static Future<List<String>> getNumberList() async {
-    final SharedPreferences prefs = await prefsData;
-    return prefs.getStringList("numberList") ?? [];
-  }
-
-}
-
-

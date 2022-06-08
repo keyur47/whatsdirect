@@ -60,14 +60,16 @@ Widget phoneNumberTextField({
 }
 
 ///
-Widget textField({  required TextEditingController? controller,required int maxLines,required Color color,required TextStyle textStyle,required TextStyle style,
+Widget textField({required TextEditingController? controller,required int maxLines,required Color color,required TextStyle textStyle,required TextStyle style,
     //bool? showCursor,
-    //FocusNode? focusNode,
+    required FocusNode? focusNode,
     required String? hintText,required Color cursorColor,
     required TextInputType textInputType,
+  required BoxBorder? boxBorder,
     required VoidCallback onTap}) {
   return Container(
     decoration: BoxDecoration(
+      border: boxBorder,
         color: color, borderRadius: BorderRadius.circular(2.w)),
     child: Padding(
       padding: EdgeInsets.only(left: 2.w),

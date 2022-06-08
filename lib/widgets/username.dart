@@ -8,14 +8,14 @@ import 'package:whatsdirect/modules/controller/controller.dart';
 import 'package:whatsdirect/utils/app_color.dart';
 import 'package:whatsdirect/utils/string_utils.dart';
 
-class AddList extends StatefulWidget {
-  AddList({Key? key}) : super(key: key);
+class UserName extends StatefulWidget {
+  UserName({Key? key}) : super(key: key);
 
   @override
-  State<AddList> createState() => _AddListState();
+  State<UserName> createState() => _UserNameState();
 }
 
-class _AddListState extends State<AddList> {
+class _UserNameState extends State<UserName> {
   Controller controller = Get.find();
 
   @override
@@ -25,18 +25,11 @@ class _AddListState extends State<AddList> {
   }
 
   getData() async {
-    controller.numberList = await SharedPrefs.getNumberList();
-    controller.countryList = await SharedPrefs.getCountryNumberList();
-    controller.nameCountryList = await SharedPrefs.getCountryNameList();
-    // controller.nameTelegramList = await SharedPrefs.getUserNameList();
+    controller.nameTelegramList = await SharedPrefs.getUserNameList();
     setState(() {
-      controller.numberList.join("");
-      controller.countryList.join("");
-      controller.nameCountryList.join("");
+      controller.nameTelegramList.join("");
     });
-    print("------------>>>${controller.numberList}");
-    print("------------>>>${controller.countryList}");
-    print("------------>>>${controller.nameCountryList}");
+    print("------------>>>${controller.nameTelegramList}");
   }
 
   @override
@@ -47,77 +40,55 @@ class _AddListState extends State<AddList> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: AppColors.darkBlue,
-          title: Text(StringsUtils.contactsHistory),
+          title: Text(StringsUtils.userNameHistory),
         ),
         body: SingleChildScrollView(
-            child: controller.numberList.isEmpty
+            child: controller.nameTelegramList.isEmpty
                 ? Text("No data")
                 : Column(
                     children: [
                       SizedBox(
                         height: 1.h,
                       ),
-                      for (var i = 0;i < controller.numberList.length;i++) ...[
+                      for (var i = 0;
+                          i < controller.nameTelegramList.length;
+                          i++) ...[
                         Padding(
                           padding:
                               EdgeInsets.only(left: 5.w, right: 5.w, top: 1.h),
                           child: Container(
-                              height: 7.h,
-
-                              decoration: BoxDecoration(
-                              color: AppColor.backgroundColor,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(width: 1)),
-                              child: Row(
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      controller.myController.text = controller.numberList[i];
-                                      controller.data.value = controller.countryList[i];
-                                      Get.back();
-                                    },
-                                    child: Padding(
-                                      padding:
-                                          EdgeInsets.only(left: 2.w, top: 0.h),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          CircleAvatar(
-                                            backgroundColor: AppColors.darkBlue,
-                                            child: Text(
-                                              "+${controller.countryList[i]}",
-                                              style: TextStyle(
-                                                  color: AppColors.white,
-                                                  fontSize: 12),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                top: 1.2.h, left: 2.w),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-
-                                            Text("${controller.numberList[i]}",
-                                                    style: TextStyle(
-                                                        color: AppColors.black,
-                                                        fontSize: 16)),
-                                                Text(
-                                                    "${controller.nameCountryList[i].toString()}",
-                                                    style: TextStyle(
-                                                        color: AppColors.red,
-                                                        fontSize: 14)),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+                            height: 4.h,
+                            decoration: BoxDecoration(
+                                color: AppColor.backgroundColor,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(width: 1)),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                left: 2.w,
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  controller.textController.text = controller.nameTelegramList[i];
+                                  Get.back();
+                                },
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.arrow_forward),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 2.w),
+                                      child: Text(
+                                        "${controller.nameTelegramList[i]}",
+                                        style: TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 16),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              )),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                         SizedBox(height: 0.5.h)
                       ],

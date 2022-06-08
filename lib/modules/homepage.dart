@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -14,10 +15,10 @@ import 'package:whatsdirect/modules/num_pad.dart';
 import 'package:whatsdirect/utils/app_color.dart';
 import 'package:whatsdirect/utils/appsnackbar.dart';
 import 'package:whatsdirect/utils/string_utils.dart';
-import 'package:whatsdirect/widgets/add-number_list.dart';
 import 'package:whatsdirect/widgets/button_box.dart';
 import 'package:whatsdirect/widgets/custom_textfield.dart';
 import 'package:whatsdirect/widgets/privacy.dart';
+import 'package:whatsdirect/widgets/tabbar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -80,12 +81,47 @@ class _HomePageState extends State<HomePage> {
                           // enableFeedback: true,
                           onSelected: (int value) {
                             if (value == 1) {
-                              Get.to(AddList());
+                              Get.to(TabBarApp());
                             } else if (value == 2) {
                               FlutterShare.share(
                                   title: "Direct WhatsApp",
                                   linkUrl:
                                       "https://play.google.com/store/games");
+                            } else if (value == 3) {
+                              showDialog(context: context, builder: (BuildContext context){
+                                return CupertinoAlertDialog(
+                                  title: Column(
+                                    children: [
+                                      Text("Enjoying Direct WhatsApp",style: TextStyle(fontWeight: FontWeight.w800),),
+                                      SizedBox(height: 2.h,),
+                                      Text("Top a star to rate it on the \n App Store.",style: TextStyle(fontWeight: FontWeight.w300,fontSize: 14),),
+                                      SizedBox(height: 1.h,),
+                                    ],
+                                  ),
+                                  actions: [
+                                    // CupertinoDialogAction(onPressed: (){
+                                    // }, child: Text("Back")),
+                                    CupertinoDialogAction(onPressed: (){
+                                    }, child: Text("Not Now")),
+                                  ],
+                                  content: RatingBar.builder(
+                                    initialRating: 0,
+                                    minRating: 1,
+                                    itemSize: 2.h,
+                                    direction: Axis.horizontal,
+                                    allowHalfRating: true,
+                                    itemCount: 5,
+                                    itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                                    itemBuilder: (context, _) => Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                    ),
+                                    onRatingUpdate: (rating) {
+                                      print(rating);
+                                    },
+                                  ),
+                                );
+                              });
                             } else if (value == 4) {
                               showModalBottomSheet(
                                 shape: RoundedRectangleBorder(
@@ -114,6 +150,8 @@ class _HomePageState extends State<HomePage> {
                                                 left: 5.w,
                                                 top: 5.h),
                                             child: textField(
+                                              focusNode: controller.emailFocusNode,
+                                                boxBorder: Border.all(width: 2),
                                                 controller: controller
                                                     .emailFeedBackController,
                                                 hintText: StringsUtils.email,
@@ -121,14 +159,14 @@ class _HomePageState extends State<HomePage> {
                                                     TextInputType.text,
                                                 onTap: () {},
                                                 maxLines: 1,
-                                                color: AppColors.grey,
+                                                color: AppColor.backgroundColor,
                                                 textStyle: TextStyle(
-                                                    color: AppColors.grey[200],
+                                                    color: AppColors.grey,
                                                     fontSize: 14),
                                                 style: const TextStyle(
                                                     fontSize: 16,
-                                                    color: AppColors.white),
-                                                cursorColor: Colors.white),
+                                                    color: AppColors.black),
+                                                cursorColor: Colors.black),
                                           ),
                                           Padding(
                                             padding: EdgeInsets.only(
@@ -136,6 +174,8 @@ class _HomePageState extends State<HomePage> {
                                                 left: 5.w,
                                                 top: 1.h),
                                             child: textField(
+                                                boxBorder: Border.all(width: 2),
+                                                  focusNode: controller.passwordFocusNode,
                                                 controller: controller
                                                     .FeedBackController,
                                                 hintText: StringsUtils.feedback,
@@ -143,14 +183,14 @@ class _HomePageState extends State<HomePage> {
                                                     TextInputType.text,
                                                 onTap: () {},
                                                 maxLines: 4,
-                                                color: AppColors.grey,
+                                                color: AppColor.backgroundColor,
                                                 textStyle: TextStyle(
-                                                    color: AppColors.grey[200],
+                                                    color: AppColors.grey,
                                                     fontSize: 14),
                                                 style: const TextStyle(
                                                     fontSize: 16,
-                                                    color: AppColors.white),
-                                                cursorColor: Colors.white),
+                                                    color: AppColors.black),
+                                                cursorColor: Colors.black),
                                           ),
                                           Padding(
                                             padding: EdgeInsets.only(
@@ -165,9 +205,32 @@ class _HomePageState extends State<HomePage> {
                                           Padding(
                                             padding: EdgeInsets.only(top: 5.h),
                                             child: ElevatedButton(
-                                                onPressed: () {},
-                                                child: Text(
-                                                    StringsUtils.sendFeedBack)),
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: AppColors
+                                                      .darkBlue, // Background color
+                                                ),
+                                                onPressed: ()async {
+                                                  if (controller.emailFeedBackController.text.isNotEmpty &&
+                                                      controller.FeedBackController.text.isNotEmpty) {
+                                                      await controller.emailFeedBackController.text;
+                                                      await controller.FeedBackController.text;
+                                                      var feedEmail = controller.emailFeedBackController.text;
+                                                      var feed = controller.FeedBackController.text;
+                                                      print("feedEmail:-$feedEmail");
+                                                      print("feed:-$feed");
+                                                      Get.back();
+                                                  } else {
+                                                    AppSnackBar
+                                                        .showErrorSnackBar(
+                                                      message:
+                                                          "Please Enter Email & Feedback",
+                                                      title: 'Error',
+                                                      snackPosition:
+                                                          SnackPosition.TOP,
+                                                    );
+                                                  }
+                                                },
+                                                child: Text(StringsUtils.sendFeedBack)),
                                           )
                                         ],
                                       ),
@@ -182,7 +245,7 @@ class _HomePageState extends State<HomePage> {
                           },
                           itemBuilder: (context) => [
                                 PopupMenuItem(
-                                  child: Text(StringsUtils.aboutApp),
+                                  child: Text(StringsUtils.history),
                                   value: 1,
                                 ),
                                 PopupMenuItem(
@@ -228,14 +291,26 @@ class _HomePageState extends State<HomePage> {
                               hintText: StringsUtils.phoneNumber,
                               textInputType: TextInputType.none,
                               valueChanged: (country) {
-                                controller.data.value = country.dialCode;
+                                setState(() {
+                                  controller.data.value = country.dialCode;
+                                  controller.countryName.value = country.name;
+                                });
                                 print(
                                     'Country changed to: ${country.dialCode}');
+                                print(
+                                    'Country changed to name: ${country.name}');
                               },
                               onTap: () async {
-                                List<String> data = await SharedPrefs.getNumberList();
-                                var dataType = controller.myController.text = data.join();
+                                List<String> data =
+                                    await SharedPrefs.getNumberList();
+                                var dataType =
+                                    controller.myController.text = data.last;
                                 print("dataType:-  $dataType");
+                                List<String> data1 =
+                                    await SharedPrefs.getCountryNumberList();
+                                var dataType1 =
+                                    controller.data.value = data1.last;
+                                print("dataType:-  $dataType1");
                                 // var data =  controller.myController.text = AppSharedPreference.lastNumber.toString();
                                 // // AppSharedPreference.clear();
                                 //   controller.data.value = AppSharedPreference.lastNumberCode.toString();
@@ -248,6 +323,8 @@ class _HomePageState extends State<HomePage> {
                           height: 1.5.h,
                         ),
                         textField(
+                          focusNode: controller.confirmFocusNode,
+                          boxBorder: Border(),
                             controller: controller.textController,
                             hintText: StringsUtils.typeYourMessage,
                             textInputType: TextInputType.text,
@@ -264,97 +341,219 @@ class _HomePageState extends State<HomePage> {
                         SizedBox(
                           height: 1.5.h,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            button(
-                                onTap: () async {
-                                  if (controller.myController.text.isNotEmpty) {
-                                    if (controller.data.isNotEmpty) {
-                                      List<String> tempList = [];
-                                      tempList
-                                          .add(controller.myController.text);
-                                      SharedPrefs.numberList(tempList);
-                                      // List<String> data = await SharedPrefs.getNumberList();
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              button(
+                                  onTap: () async {
+                                    if (controller
+                                        .myController.text.isNotEmpty) {
+                                      if (controller.data.isNotEmpty) {
+                                        controller.numberList.addAll(
+                                            [controller.myController.text]);
+                                        await SharedPrefs.setNumberList(
+                                            controller.numberList);
+                                        print("object${controller.numberList}");
+                                        controller.countryList
+                                            .addAll([controller.data.value]);
+                                        await SharedPrefs.setCountryNumberList(
+                                            controller.countryList);
+                                        print(
+                                            "CountryObject${controller.countryList}");
+                                        controller.nameCountryList.addAll(
+                                            [controller.countryName.value]);
+                                        await SharedPrefs.setCountryNameList(
+                                            controller.nameCountryList);
+                                        print(
+                                            "CountryObjectName${controller.nameCountryList}");
+                                        // List<String> data = await SharedPrefs.getNumberList();
+                                        // AppSharedPreference.setLastNumber(tempList);
+                                        // tempList.add(controller.myController.text);
+                                        // AppSharedPreference.setLastNumberCode(controller.myController.text);
+                                        // tempList.add(controller.data.value);
+                                        // controller.url.value =
+                                        //     "https://telegram.me/${controller.data.value}${controller.myController.text}?text=${controller.textController.text}";
+                                        // await launch(controller.url.value);
+                                        // print("------${controller.url.value}");
 
-                                      // AppSharedPreference.setLastNumber(tempList);
-                                      // tempList.add(controller.myController.text);
-                                      // AppSharedPreference.setLastNumberCode(controller.myController.text);
-                                      // tempList.add(controller.data.value);
+                                        ///
+                                        controller.url.value =
+                                            "https://wa.me/+${controller.data.value}${controller.myController.text}?text=${controller.textController.text}";
+                                        await launch(controller.url.value);
+                                        print("------${controller.url.value}");
+                                      } else {
+                                        AppSnackBar.showErrorSnackBar(
+                                          message: "Please enter Country Code",
+                                          title: 'Error',
+                                          snackPosition: SnackPosition.TOP,
+                                        );
+                                      }
+                                    } else {
+                                      AppSnackBar.showErrorSnackBar(
+                                        message: "Please enter Phone Number",
+                                        title: 'Error',
+                                        snackPosition: SnackPosition.BOTTOM,
+                                      );
+                                    }
+                                  },
+                                  text: StringsUtils.openWhatsApp,
+                                  iconData: Icons.whatsapp,
+                                  textColor: AppColor.whiteColor,
+                                  boxColor: AppColors.darkBlue,
+                                  iconColor: Colors.green),
+                              SizedBox(
+                                width: 3.w,
+                              ),
+                              button(
+                                  onTap: () async {
+                                    if (controller
+                                        .myController.text.isNotEmpty) {
+                                      if (controller.data.isNotEmpty) {
+                                        controller.numberList.addAll(
+                                            [controller.myController.text]);
+                                        await SharedPrefs.setNumberList(
+                                            controller.numberList);
+                                        print("object${controller.numberList}");
+                                        controller.countryList
+                                            .addAll([controller.data.value]);
+                                        await SharedPrefs.setCountryNumberList(
+                                            controller.countryList);
+                                        print(
+                                            "CountryObject${controller.countryList}");
+                                        controller.nameCountryList.addAll(
+                                            [controller.countryName.value]);
+                                        await SharedPrefs.setCountryNameList(
+                                            controller.nameCountryList);
+                                        print(
+                                            "CountryObjectName${controller.nameCountryList}");
+
+                                        // AppSharedPreference.setLastNumber(
+                                        //     controller.myController.text);
+                                        // AppSharedPreference.setLastNumberCode(
+                                        //     controller.data.value);
+                                        await Geolocator.requestPermission();
+                                        if (await Permission
+                                            .location.isGranted) {
+                                          Position? position;
+                                          try {
+                                            position = await Geolocator
+                                                .getCurrentPosition(
+                                              desiredAccuracy: LocationAccuracy
+                                                  .bestForNavigation,
+                                              timeLimit:
+                                                  const Duration(seconds: 5),
+                                            );
+                                            var urls =
+                                                "https://www.google.com/maps/?q=${position.latitude},${position.longitude}"
+                                                    .toString();
+                                            final url =
+                                                "https://wa.me/+${controller.data.value}${controller.myController.text}?text=See my real-time location on Maps:$urls";
+                                            await launch(url);
+                                            print("Location$url");
+                                            print("Location121$urls");
+                                          } catch (e) {}
+                                        }
+                                      } else {
+                                        AppSnackBar.showErrorSnackBar(
+                                          message: "Please enter Country Code",
+                                          title: 'Error',
+                                          snackPosition: SnackPosition.TOP,
+                                        );
+                                      }
+                                    } else {
+                                      AppSnackBar.showErrorSnackBar(
+                                        message: "Please enter Phone Number",
+                                        title: 'Error',
+                                        snackPosition: SnackPosition.BOTTOM,
+                                      );
+                                    }
+                                  },
+                                  text: StringsUtils.shareLocation,
+                                  iconData: Icons.location_on_outlined,
+                                  boxColor: AppColor.whiteColor,
+                                  textColor: AppColors.black,
+                                  iconColor: Colors.green),
+                              SizedBox(
+                                width: 3.w,
+                              ),
+                              button(
+                                  onTap: () async {
+                                    if (controller
+                                        .myController.text.isNotEmpty) {
+                                      controller.numberList.addAll(
+                                          [controller.myController.text]);
+                                      await SharedPrefs.setNumberList(
+                                          controller.numberList);
+                                      print("object${controller.numberList}");
+                                      controller.countryList
+                                          .addAll([controller.data.value]);
+                                      await SharedPrefs.setCountryNumberList(
+                                          controller.countryList);
+                                      print(
+                                          "CountryObject${controller.countryList}");
+                                      controller.nameCountryList.addAll(
+                                          [controller.countryName.value]);
+                                      await SharedPrefs.setCountryNameList(
+                                          controller.nameCountryList);
+                                      print(
+                                          "CountryObjectName${controller.nameCountryList}");
+                                      // controller.numberList.addAll([controller.myController.text]);
+                                      // await SharedPrefs.setNumberList(controller.numberList);
+                                      // print("object${controller.numberList}");
+                                      // controller.countryList.addAll([controller.data.value]);
+                                      // await SharedPrefs.setCountryNumberList(controller.countryList);
+                                      // print("CountryObject${controller.countryList}");
+
                                       controller.url.value =
-                                          "https://wa.me/+${controller.data.value}${controller.myController.text}?text=${controller.textController.text}";
+                                          "https://telegram.me/+${controller.data.value}${controller.myController.text}";
                                       await launch(controller.url.value);
                                       print("------${controller.url.value}");
                                     } else {
                                       AppSnackBar.showErrorSnackBar(
-                                        message: "Please enter Country Code",
+                                        message: "Please enter Phone Number",
                                         title: 'Error',
-                                        snackPosition: SnackPosition.TOP,
+                                        snackPosition: SnackPosition.BOTTOM,
                                       );
                                     }
-                                  } else {
-                                    AppSnackBar.showErrorSnackBar(
-                                      message: "Please enter Phone Number",
-                                      title: 'Error',
-                                      snackPosition: SnackPosition.BOTTOM,
-                                    );
-                                  }
-                                },
-                                text: StringsUtils.openWhatsApp,
-                                iconData: Icons.whatsapp,
-                                textColor: AppColor.whiteColor,
-                                boxColor: AppColors.darkBlue,
-                                iconColor: Colors.green),
-                            button(
-                                onTap: () async {
-                                  if (controller.myController.text.isNotEmpty) {
-                                    if (controller.data.isNotEmpty) {
-                                      // AppSharedPreference.setLastNumber(
-                                      //     controller.myController.text);
-                                      // AppSharedPreference.setLastNumberCode(
-                                      //     controller.data.value);
-                                      await Geolocator.requestPermission();
-                                      if (await Permission.location.isGranted) {
-                                        Position? position;
-                                        try {
-                                          position = await Geolocator
-                                              .getCurrentPosition(
-                                            desiredAccuracy: LocationAccuracy
-                                                .bestForNavigation,
-                                            timeLimit:
-                                                const Duration(seconds: 5),
-                                          );
-                                          var urls =
-                                              "https://www.google.com/maps/?q=${position.latitude},${position.longitude}"
-                                                  .toString();
-                                          final url =
-                                              "https://wa.me/+${controller.data.value}${controller.myController.text}?text=See my real-time location on Maps:$urls";
-                                          await launch(url);
-                                          print("Location$url");
-                                          print("Location121$urls");
-                                        } catch (e) {}
-                                      }
+                                  },
+                                  text: StringsUtils.openTelegram,
+                                  iconData: Icons.telegram,
+                                  boxColor: AppColors.white,
+                                  textColor: AppColors.black,
+                                  iconColor: Colors.blue),
+                              SizedBox(
+                                width: 3.w,
+                              ),
+                              button(
+                                  onTap: () async {
+                                    if (controller
+                                        .textController.text.isNotEmpty) {
+                                      controller.nameTelegramList.addAll(
+                                          [controller.textController.text]);
+                                      await SharedPrefs.setUserNameList(
+                                          controller.nameTelegramList);
+                                      print("object${controller.numberList}");
+                                      controller.url.value =
+                                          "https://telegram.me/${controller.textController.text}";
+                                      await launch(controller.url.value);
+                                      print("------${controller.url.value}");
                                     } else {
                                       AppSnackBar.showErrorSnackBar(
-                                        message: "Please enter Country Code",
+                                        message: "Please enter Username",
                                         title: 'Error',
-                                        snackPosition: SnackPosition.TOP,
+                                        snackPosition: SnackPosition.BOTTOM,
                                       );
                                     }
-                                  } else {
-                                    AppSnackBar.showErrorSnackBar(
-                                      message: "Please enter Phone Number",
-                                      title: 'Error',
-                                      snackPosition: SnackPosition.BOTTOM,
-                                    );
-                                  }
-                                },
-                                text: StringsUtils.shareLocation,
-                                iconData: Icons.location_on_outlined,
-                                boxColor: AppColor.whiteColor,
-                                textColor: AppColors.black,
-                                iconColor: Colors.green),
-                          ],
+                                  },
+                                  text: StringsUtils.userNameTelegram,
+                                  iconData: Icons.people_alt_sharp,
+                                  boxColor: AppColor.whiteColor,
+                                  textColor: AppColors.black,
+                                  iconColor: Colors.blue),
+                            ],
+                          ),
                         ),
                         showNumericContainer.value
                             ? NumPad(

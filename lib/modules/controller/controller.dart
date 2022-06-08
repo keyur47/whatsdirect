@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:whatsdirect/utils/appsnackbar.dart';
+import 'package:whatsdirect/utils/string_utils.dart';
 
 class Controller extends GetxController {
 
@@ -12,9 +14,44 @@ class Controller extends GetxController {
   RxBool isOpenKeyboard  = false.obs;
   RxString url = ''.obs;
   RxString data = ''.obs;
-  List<String> allData = [];
-  List<String> tempList = [];
-  List<String> Listt = [];
+  RxString countryName = ''.obs;
+  String allData = "";
+  List<String> numberList = [];
+  List<String> countryList = [];
+  List<String> nameCountryList = [];
+  List<String> nameTelegramList = [];
+  FocusNode emailFocusNode = FocusNode();
+  FocusNode passwordFocusNode = FocusNode();
+  FocusNode confirmFocusNode = FocusNode();
+
+
+  void onInit() {
+    emailFocusNode.addListener(() {
+      if (!emailFocusNode.hasFocus) {
+        AppSnackBar
+            .showErrorSnackBar(
+          message:
+          "Please Enter Email & Feedback",
+          title: 'Error',
+          snackPosition:
+          SnackPosition.TOP,
+        );
+      }else if (!(RegExp(StringsUtils.emailRegExp)
+          .hasMatch(emailFeedBackController.text.trim()))) {
+        AppSnackBar
+            .showErrorSnackBar(
+          message:
+          "Please Enter a & b",
+          title: 'Error',
+          snackPosition:
+          SnackPosition.TOP,
+        );
+      }
+    });
+    super.onInit();
+  }
+
+
 
   // @override
   //   void onInit() {
